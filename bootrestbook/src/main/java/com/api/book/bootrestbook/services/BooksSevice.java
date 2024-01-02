@@ -34,7 +34,11 @@ public class BooksSevice {
     public Book getBookById(int id) {
 
         Book book = null;
-        book = list.stream().filter(e -> e.getId() == id).findFirst().get();
+        try {
+            book = list.stream().filter(e -> e.getId() == id).findFirst().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return book;
     }
 
@@ -60,8 +64,17 @@ public class BooksSevice {
 
     }
 
-
     // for updating the books record
-    
+    public void updateBook(Book book, int bookid) {
+        // used the stream api
+        list = list.stream()
+                .map(b -> {
+                    if (b.getId() == bookid) {
+                        b.setTitle(book.getTitle());
+                        b.setAuthor(book.getAuthor());
+                    }
+                    return b;
+                }).collect(Collectors.toList());
+    }
 
 }
