@@ -65,15 +65,27 @@ public class BookController {
 
     // delete book handler
     @DeleteMapping("/books/{id}")
-    public void deleteBook(@PathVariable("id") int id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") int id) {
+        try {
+            this.booksSevice.deleteBook(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-        this.booksSevice.deleteBook(id);
     }
 
     // update book handler
     @PutMapping("/books/{bookId}")
-    public void updateBook(@RequestBody Book book, @PathVariable("bookId") int id) {
-        this.booksSevice.updateBook(book, id);
+    public ResponseEntity<Book> updateBook(@RequestBody Book book, @PathVariable("bookId") int id) {
+        try {
+            this.booksSevice.updateBook(book, id);
+            return ResponseEntity.ok().body(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
     }
 
